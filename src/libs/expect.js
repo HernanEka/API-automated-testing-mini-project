@@ -3,7 +3,7 @@ import { expect, use } from "chai"
 import ApplyAjvFormat from "ajv-formats"
 import chaiJsonSchemaAjv from "chai-json-schema-ajv"
 
-const ajvInstance = Ajv()
+const ajvInstance = new Ajv()
 
 ApplyAjvFormat(ajvInstance)
 

@@ -1,9 +1,9 @@
-import { expect } from "chai"
+import expect from "../libs/expect.js"
 import { getAllProjectCosting } from "../apis/projects.api.js"
 
 describe('PROJECT API', function () {
     
-    describe.only('Project Costing API - /pca', function () {
+    describe('Project Costing API - /pca', function () {
         
         it('Get project all costing', async function () {
             

@@ -1,5 +1,5 @@
 import { authAutoLogin, authLogin } from "../apis/auth.api.js"
-import { expect } from "chai"
+import expect from "../libs/expect.js"
 
 describe('AUTH API', function () {
 
