@@ -1,0 +1,14 @@
+# Node.js
+node_modules/
+npm-debug.log
+
+# Mocha and Chai
+test/reporters/
+test/screenshots/
+
+# Axios cache files (if applicable)
+.cache/
+
+# Logs
+logs/
+*.log
