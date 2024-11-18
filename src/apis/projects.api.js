@@ -72,3 +72,20 @@ export async function getAllProjectCostingItem() {
 
     return res
 }
+
+export async function getSingleProjectCostingItem(id) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcaitem/'+id, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}

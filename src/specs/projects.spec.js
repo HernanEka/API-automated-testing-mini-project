@@ -1,5 +1,5 @@
 import expect from "../libs/expect.js"
-import { getAllProjectCosting, getAllProjectCostingItem, getPageProjectCosting, getSingleProjectCosting } from "../apis/projects.api.js"
+import { getAllProjectCosting, getAllProjectCostingItem, getPageProjectCosting, getSingleProjectCosting, getSingleProjectCostingItem } from "../apis/projects.api.js"
 
 describe('PROJECT API', function () {
 
@@ -125,6 +125,18 @@ describe('PROJECT API', function () {
             // console.log(res.data)
 
             expect(res.data).to.be.jsonSchema(projectCostingItemSchema)
+
+        })
+
+        it('Check response status code get Single project costing item by ID', async function () {
+            
+            const allProject = await getAllProjectCostingItem()
+
+            const firstProject = await allProject.data.data[0].id
+
+            const res = await getSingleProjectCostingItem(firstProject)
+
+            expect(res.status).to.equal(200)
 
         })
 
