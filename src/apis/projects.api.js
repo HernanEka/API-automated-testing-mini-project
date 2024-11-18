@@ -89,3 +89,58 @@ export async function getSingleProjectCostingItem(id) {
 
     return res
 }
+
+export async function getPageProjectCostingItem(size, number) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcaitem/' + size + "/" + number, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getProjectCostingItemByIDanditemNumber(id, number) {
+    
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcaitem/byid/' + id + "/" + number, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+
+}
+
+export async function getProjectCostingItembyProjectCostingID(id,size,number) {
+    
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcaitem/byidpcid/'+id+'/' + size + '/' + number, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+
+}

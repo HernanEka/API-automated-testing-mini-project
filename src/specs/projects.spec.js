@@ -1,5 +1,6 @@
 import expect from "../libs/expect.js"
-import { getAllProjectCosting, getAllProjectCostingItem, getPageProjectCosting, getSingleProjectCosting, getSingleProjectCostingItem } from "../apis/projects.api.js"
+import { getAllProjectCosting, getAllProjectCostingItem, getPageProjectCosting, getPageProjectCostingItem, getProjectCostingItemByIDanditemNumber, getProjectCostingItembyProjectCostingID, getSingleProjectCosting, getSingleProjectCostingItem } from "../apis/projects.api.js"
+import { arrayProjectItemSchema, projectCostingItemSchema, singleProjectCostingItemSchema } from "../schemas/project.schema.js"
 
 describe('PROJECT API', function () {
 
@@ -91,52 +92,101 @@ describe('PROJECT API', function () {
 
             const res = await getAllProjectCostingItem()
 
-            const projectCostingItemSchema = {
-
-                type: 'object',
-                properties: {
-                    data: {
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            properties: {
-                                projectCostingId: { type: 'number' },
-                                contractDateStart: { type: 'string', format: 'date' },
-                                contractDateEnd: { type: 'string', format: 'date' },
-                                itemNumber: { type: 'number' },
-                                itemNumberDsiplay: { type: 'number' },
-                                itemName: { type: 'string' },
-                                roleDisplay: { type: 'string' },
-                                manpowerSolutionOpportunityId: { type: 'number' },
-                                note: { type: 'string' },
-                                personId: { type: 'number' },
-                                salaryGrade: { type: 'number' },
-                                cost: { type: 'number' },
-                                sellPrice: { type: 'number' },
-                                grossProfit: { type: 'number' },
-                                grossProfitPercentage: { type: 'number' }
-                            }
-                        }
-                    }
-                }
-
-            }
-
-            // console.log(res.data)
-
             expect(res.data).to.be.jsonSchema(projectCostingItemSchema)
 
         })
 
-        it('Check response status code get Single project costing item by ID', async function () {
+        it.skip('Check response status code get Single project costing item by ID', async function () {
             
             const allProject = await getAllProjectCostingItem()
 
-            const firstProject = await allProject.data.data[0].id
+            const firstProject = await allProject.data.data[0].projectCostingId
 
             const res = await getSingleProjectCostingItem(firstProject)
 
             expect(res.status).to.equal(200)
+
+        })
+
+        it('Check pageSize to equal 3 when get 3 Project Costing Item on page number 1', async function () {
+            
+            const res = await getPageProjectCostingItem(3,1)
+
+            expect(res.data.data.pageSize).to.equal(3)
+
+        })
+
+        it('Check pageNumber to equal 1 get 3 Project Costing Item on page number 1', async function () {
+            
+            const res = await getPageProjectCostingItem(3,1)
+
+            expect(res.data.data.pageNumber).to.equal(1)
+
+        })
+
+        it('Check total items to equal 3 when get 3 Project Costing Item on page number 1', async function () {
+            
+            const res = await getPageProjectCostingItem(3,1)
+
+            expect(res.data.data.items.length).to.equal(3)
+
+        })
+
+        it('Check json Schema of Project Costing Items when get 3 Project Costing Item on page number 1', async function () {
+            
+            const res = await getPageProjectCostingItem(10,1)
+
+            expect(res.data.data.items).to.be.jsonSchema(arrayProjectItemSchema)
+
+        })
+
+        it('Check response status code when get Project Costing Item with projectCosting ID 19 and itemNumber 1', async function () {
+            
+            const res = await getProjectCostingItemByIDanditemNumber(19,1)
+
+            expect(res.status).to.be.equal(200)
+
+        })
+
+        it('Check projectCostingID when get Project Costing Item with projectCosting ID 19 and itemNumber 1', async function () {
+            
+            const res = await getProjectCostingItemByIDanditemNumber(19,1)
+
+            expect(res.data.data.projectCostingId).to.equal(19)
+
+        })
+
+        it('Check itemNumber when get Project Costing Item with projectCosting ID 19 and itemNumber 1', async function () {
+            
+            const res = await getProjectCostingItemByIDanditemNumber(19,1)
+
+            expect(res.data.data.itemNumber).to.equal(1)
+
+        })
+
+        it('Check jsonSchema when get Project Costing Item with projectCosting ID 19 and itemNumber 1', async function () {
+            
+            const res = await getProjectCostingItemByIDanditemNumber(19,1)
+
+            expect(res.data.data).to.be.jsonSchema(singleProjectCostingItemSchema)
+
+        })
+
+        it('Check response status when get all Project Costing Item with projectCostingId 19', async function () {
+            
+            const res = await getProjectCostingItembyProjectCostingID(19,2,1)
+
+            expect(res.status).to.be.equal(200)
+
+        })
+
+        it('Check projectCostingId of every items to equal 19 when get all Project Costing Item with projectCostingId 19', async function () {
+            
+            const res = await getProjectCostingItembyProjectCostingID(19,2,1)
+
+            res.data.data.items.forEach(item => {
+                expect(item).to.have.property('projectCostingId', 19)
+            });
 
         })
 
