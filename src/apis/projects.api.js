@@ -18,3 +18,37 @@ export async function getAllProjectCosting() {
 
     return res
 }
+
+export async function getSingleProjectCosting(id) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pca/'+id, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getPageProjectCosting(size, number) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pca/'+size+'/'+number, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
