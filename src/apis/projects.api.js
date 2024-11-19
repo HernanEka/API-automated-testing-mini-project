@@ -229,3 +229,54 @@ export async function getPageProjectCostingSubitem(size, number) {
 
     return res
 }
+
+export async function getAllProjectCostingDocument() {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pca-supportdoc', {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getProjectCostingDocumentByAttachmentId(id) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pca-supportdoc/9999/'+id, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getPageProjectCostingDocument(size,number) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pca-supportdoc/'+size+'/'+number, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
