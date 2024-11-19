@@ -144,3 +144,88 @@ export async function getProjectCostingItembyProjectCostingID(id,size,number) {
     return res
 
 }
+
+export async function getAllProjectCostingSubitem() {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcasubitem', {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getAllProjectCostingSubitemByPcId(pcid) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcasubitem/all/'+pcid, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getPageProjectCostingSubitemByPcId(pcid, size, number) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcasubitem/all/'+pcid+'/'+size+'/'+number, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getSpesificProjectCostingSubitem(pcid, itemNumber, subItemName) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcasubitem/'+pcid+'/'+itemNumber+'/'+subItemName, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}
+
+export async function getPageProjectCostingSubitem(size, number) {
+    const auth = await authAutoLogin()
+
+    const access_token = await auth.data.access_token
+
+    const res = await axiosInstance.get('/project/pcasubitem/'+size+'/'+number, {
+
+        headers: {
+            'X-TenantID': 9999,
+            Authorization: `Bearer ${access_token}`
+        }
+
+    })
+
+    return res
+}

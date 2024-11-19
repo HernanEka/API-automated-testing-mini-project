@@ -1,6 +1,6 @@
 import expect from "../libs/expect.js"
-import { getAllProjectCosting, getAllProjectCostingItem, getPageProjectCosting, getPageProjectCostingItem, getProjectCostingItemByIDanditemNumber, getProjectCostingItembyProjectCostingID, getSingleProjectCosting, getSingleProjectCostingItem } from "../apis/projects.api.js"
-import { arrayProjectItemSchema, projectCostingItemSchema, singleProjectCostingItemSchema } from "../schemas/project.schema.js"
+import { getAllProjectCosting, getAllProjectCostingItem, getAllProjectCostingSubitem, getAllProjectCostingSubitemByPcId, getPageProjectCosting, getPageProjectCostingItem, getPageProjectCostingSubitem, getPageProjectCostingSubitemByPcId, getProjectCostingItemByIDanditemNumber, getProjectCostingItembyProjectCostingID, getSingleProjectCosting, getSingleProjectCostingItem, getSpesificProjectCostingSubitem } from "../apis/projects.api.js"
+import { arrayProjectItemSchema, projectCostingItemSchema, projectCostingSubitemSchema, singleProjectCostingItemSchema } from "../schemas/project.schema.js"
 
 describe('PROJECT API', function () {
 
@@ -192,5 +192,140 @@ describe('PROJECT API', function () {
 
     })
 
+    describe.only('Porject Costing Subitem - /pcasubitem/', function () {
+        
+        it('Check response status code when get all subitem', async function () {
+            
+            const res = await getAllProjectCostingSubitem()
+
+            expect(res.status).to.equal(200)
+
+        })
+
+        it('Check jsonSchema of project costing subitem when get all subitem', async function () {
+            
+            const res = await getAllProjectCostingSubitem()
+
+            expect(res.data).to.be.jsonSchema(projectCostingSubitemSchema)
+
+        })
+
+        it('Check response status code when get all sub item with spesific projectCostingId = 18', async function () {
+            
+            const res = await getAllProjectCostingSubitemByPcId(18)
+
+            expect(res.status).to.equal(200)
+
+        })
+
+        it('Check projectCostingId of all items is equal 18 when get all sub item with spesific projectCostingId = 18', async function () {
+            
+            const res = await getAllProjectCostingSubitemByPcId(18)
+
+            res.data.data.forEach(item => {
+                expect(item).to.have.property('projectCostingId', 18)
+            });
+
+        })
+        
+        it('Check response status code when get 2 subitem with projectCostingId 18 on page 1', async function () {
+            
+            const res = await getPageProjectCostingSubitemByPcId(18,2,1)
+
+            expect(res.status).to.equal(200)
+
+        })
+
+        it('Check total item when get 2 subitem with projectCostingId 18 on page 1', async function () {
+            
+            const res = await getPageProjectCostingSubitemByPcId(18,2,1)
+
+            expect(res.data.data.items.length).to.equal(2)
+
+        })
+
+        it('Check projectCostingId of all item when get 2 subitem with projectCostingId 18 on page 1', async function () {
+            
+            const res = await getPageProjectCostingSubitemByPcId(18,2,1)
+
+            res.data.data.items.forEach(item => {
+                expect(item).to.have.property('projectCostingId', 18)
+            })
+            
+        })
+
+        it('Check response status code when get subitem with sepsific projectCostingId, itemNumber, and subItemName', async function () {
+            
+            const all = await getAllProjectCostingSubitem()
+
+            const projectCostingId = await all.data.data[0].projectCostingId
+            const itemNumber = await all.data.data[0].itemNumber
+            const subItemName = await all.data.data[0].subItemName
+
+            const res = await getSpesificProjectCostingSubitem(projectCostingId,itemNumber,subItemName)
+
+            expect(res.status).to.equal(200)
+
+        })
+
+        it('Check projectCostingId when get subitem with sepsific projectCostingId, itemNumber, and subItemName', async function () {
+            
+            const all = await getAllProjectCostingSubitem()
+
+            const projectCostingId = await all.data.data[0].projectCostingId
+            const itemNumber = await all.data.data[0].itemNumber
+            const subItemName = await all.data.data[0].subItemName
+
+            const res = await getSpesificProjectCostingSubitem(projectCostingId,itemNumber,subItemName)
+
+            expect(res.data.data.projectCostingId).to.equal(projectCostingId)
+
+        })
+
+        it('Check itemNumber when get subitem with sepsific projectCostingId, itemNumber, and subItemName', async function () {
+            
+            const all = await getAllProjectCostingSubitem()
+
+            const projectCostingId = await all.data.data[0].projectCostingId
+            const itemNumber = await all.data.data[0].itemNumber
+            const subItemName = await all.data.data[0].subItemName
+
+            const res = await getSpesificProjectCostingSubitem(projectCostingId,itemNumber,subItemName)
+
+            expect(res.data.data.itemNumber).to.equal(itemNumber)
+
+        })
+
+        it('Check subItemName when get subitem with sepsific projectCostingId, itemNumber, and subItemName', async function () {
+            
+            const all = await getAllProjectCostingSubitem()
+
+            const projectCostingId = await all.data.data[0].projectCostingId
+            const itemNumber = await all.data.data[0].itemNumber
+            const subItemName = await all.data.data[0].subItemName
+
+            const res = await getSpesificProjectCostingSubitem(projectCostingId,itemNumber,subItemName)
+
+            expect(res.data.data.subItemName).to.equal(subItemName)
+
+        })
+
+        it('Check response status code when get 3 items on page 1 from all project costing subitem', async function () {
+            
+            const res =  await getPageProjectCostingSubitem(3,1)
+
+            expect(res.status).to.equal(200)
+
+        })
+
+        it.only('Check total items when get 3 items on page 1 from all project costing subitem', async function () {
+            
+            const res =  await getPageProjectCostingSubitem(3,1)
+
+            expect(res.data.data.items.length).to.equal(3)
+
+        })
+
+    })
 
 })
